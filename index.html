@@ -313,11 +313,11 @@ function sendWhatsApp(){
     return arredondado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
   let msg = `*Orçamento Telas Mosquiteiras*\n\n`;
-  msg += `👤 Nome: ${nome}\n\n`;
+  msg += `Nome: ${nome}\n\n`;
   screens.forEach((s, i) => {
     msg += `Tela ${i + 1} - ${s.ambient}\nTipo: ${tipoLabels[s.tipo]}\nAltura: ${s.h}m x Largura: ${s.w}m\nValor: ${formatBRL(s.v)}\n\n`;
   });
-  msg += `💰 Total: ${formatBRL(total)}\n`;
+  msg += `Total: ${formatBRL(total)}\n`;
   msg += `3x sem juros: ${arredondaReal(total / 3)}\n`;
   msg += `à vista: ${arredondaReal(total - (total * 0.05))}\n`;
 
