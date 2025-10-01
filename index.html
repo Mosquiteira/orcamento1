@@ -201,7 +201,7 @@ button.remove .emoji {
   <div class="total-box" id="totalBox">
     Total: R$0,00<br>
     3x sem juros: R$0,00<br>
-    à vista (-5%): R$0,00
+    à vista: R$0,00
   </div>
 
 
@@ -218,15 +218,21 @@ const tipoLabels = { removivel:"Tela Removível", correr:"Tela de Correr", tecid
 
 function calcValue(h,w,tipo){ 
   if(!h || !w) return 0; 
+  let valor = 0;
   switch(tipo){
-    case 'removivel': return ${arredondaReal(h+0)*(w+0)*349;
-      
-    case 'correr': return ${arredondaReal(h*w*459) + (1*1);
-      
-    case 'tecido': return ${arredondaReal(h*w*119) + (1*1);
-      
-    default: return 0;
+    case 'removivel':
+      valor = (h+0)*(w+0)*349;
+      break;
+    case 'correr':
+      valor = (h*w*459) + (1*1);
+      break;
+    case 'tecido':
+      valor = (h*w*119) + (1*1);
+      break;
+    default:
+      return 0;
   }
+  return Math.round(valor); // Arredonda o valor final
 }
 
 function createScreen(index){
@@ -303,7 +309,7 @@ function calcTotals(){
   }
   const total3x = total / 3;
   const totalVista = total - (total * 0.05);
-  $('totalBox').innerHTML = `Total: ${formatBRL(total)}<br>3x sem juros: ${arredondaReal(total3x)}<br>à vista (-5%): ${arredondaReal(totalVista)}`;
+  $('totalBox').innerHTML = `Total: ${formatBRL(total)}<br>3x sem juros: ${arredondaReal(total3x)}<br>à vista: ${arredondaReal(totalVista)}`;
   return total;
 }
 
@@ -315,12 +321,11 @@ function sendWhatsApp(){
     let arredondado = Math.round(valor);
     return arredondado.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
-  let msg = `${Nome}, segue orçamento da Tela Mosquiteira.\n\n`;
-  msg += `Nome: ${nome}\n\n`;
+  let msg = `${nome}, segue orçamento da Tela Mosquiteira.\n\n`;
   screens.forEach((s, i) => {
-    msg += `Tela ${i + 1} - ${s.ambient}\nValor: ${formatBRL(s.v)}\n\n`;
+    msg += `Tela ${i + 1} - ${s.ambient || ''}\nValor: ${formatBRL(s.v)}\n\n`;
   });
-  msg += `Total: ${arredondaBRL(total)}\n`;
+  msg += `Total: ${formatBRL(total)}\n`;
   msg += `3x sem juros: ${arredondaReal(total / 3)}\n`;
   msg += `à vista: ${arredondaReal(total - (total * 0.05))}\n`;
 
@@ -329,7 +334,7 @@ function sendWhatsApp(){
   window.open(`https://wa.me/551341412112?text=${urlMsg}`,'_blank');
 }
 
-function resetForm(){ $('nome').value=''; $('telefone').value='' $('endereço').value='' $('bairro').value=''; screens=[]; render(); }
+function resetForm(){ $('nome').value=''; $('telefone').value=''; screens=[]; render(); }
 
 render();
 </script>
